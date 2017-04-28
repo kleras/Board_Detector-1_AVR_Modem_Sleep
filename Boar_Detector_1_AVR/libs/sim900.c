@@ -430,25 +430,19 @@ uint8_t sim900_send_sms_template(const uint8_t *aSenderNumber, uint8_t sms_templ
 			
 		}
 		
-		
+		/*
 		else
 		{
 			uart_puts("Vbat: ");
 			uart_puti(get_vbat_voltage_mV());
 			uart_puts("mV\r\n");
 			
-			/*
-			uart_puts("Temp.: ");
-			uart_puti(get_temp_C());
-			uart_puts("C\r\n");
-			*/
 			
-			uart_puts("Program error.");
-			uart_putc(0x1a);
-			
+			uart_puts("Program error.\r\n");
+			uart_putc(0x1a);			
 			
 		}			
-
+		*/
 
 	}
 	

@@ -17,6 +17,7 @@ Duomenu priemimas is hw uarto: rec_data = uart_getc();
 #define MHz F_CPU/1000000
 #define UART_BAUD_RATE 38400 //38400 // HW uart BAud rate defined
 #define DEBUG_MODE // Debug Put Char ON/OFF
+#define DEBUG_SMS // Send dublicate sms to debug number.
 
 #define new_line uart_puts("\r\n")
 #define CRLF "\r\n" //String
@@ -77,9 +78,10 @@ volatile unsigned char MOVEMENT_DETECTED = 0;
 volatile unsigned int TIME_OUT_COUNT = 0;
 volatile unsigned char RING_DETECTED = 0;
 
-const uint8_t number[] = "+37061217788";
+//const uint8_t main_number[] = "+37061217788";
+const uint8_t debug_number[] = "+37061217788";
 //const uint8_t number[] = "+37062907663";
-//const uint8_t number[] = "+37068727799";
+const uint8_t main_number[] = "+37068727799";
 
 //const uint8_t sms[] = "SMS test...\r\n";
 
@@ -302,7 +304,8 @@ int main(void)
 			{	
 				
 				// wake up modem, test at				
-				Vibration_detect_int_off();							
+				Vibration_detect_int_off();	
+				_delay_ms(100);						
 				send_sms_template(SMS_MODE_FIRST_FILTER_PASS);	// reik patikrint ar suveike, nes jei ne viskas griuna.
 								
 				Ring_detection_int_on();
@@ -461,11 +464,29 @@ uint8_t wait_for_movement_to_finish(unsigned int time_out_val){	uint8_t status
 				dbg_puts("Sending SMS.\r\n");
 				#endif
 				
-				if(sim900_send_sms_template(number, sms_template_code)) // different func.
+				if(sim900_send_sms_template(main_number, sms_template_code)) // different func.
 				{
 					#ifdef DEBUG_MODE
 					dbg_puts("SMS sent.\r\n");
 					#endif
+					
+					#ifdef DEBUG_SMS					
+					_delay_ms(5000);
+					////////////////////////
+					if(sim900_send_sms_template(debug_number, sms_template_code)) // different func.
+					{
+						#ifdef DEBUG_MODE
+						dbg_puts("Debug SMS sent.\r\n");
+						#endif
+					}
+					else
+					{
+						#ifdef DEBUG_MODE
+						dbg_puts("Debug SMS not sent.\r\n");
+						#endif
+					}
+					#endif
+					/////////////////////
 					
 					sim900_sleep_enable(); 
 					#warning Function has two return points Should be handled with care.
