@@ -505,7 +505,7 @@ void sim900_control_pins_init() // intern
 uint8_t sim900_power_on()
 {
 			
-		#warning RING: O jei paskambins arba sms?:D Reikes pakeist kai bus status pin.
+		#warning RING: O jei paskambins arba sms?:D Reikes pakeist kai bus status pin. ir gal void?
 
 		on(PWRKEY_PORT_R, PWRKEY_PIN); // PWRKEY high =  Pull power key to gnd
 		_delay_ms(PWRKEY_PULL_MS); // Pull for 1100s
@@ -569,7 +569,7 @@ void sim900_sleep_disable()
 {
 	// Sleep disable DTR Low
 	off(DTR_PORT_R, DTR_PIN);	
-	_delay_ms(100);
+	_delay_ms(200);
 	#ifdef DEBUG_MODE
 	dbg_puts("Modem Sleep disabled.\r\n");
 	#endif

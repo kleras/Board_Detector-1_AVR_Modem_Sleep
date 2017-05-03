@@ -85,6 +85,8 @@ void dbg_putchar(uint8_t c)
         SREG = sreg;
 }
 
+/*
+
 void dbg_print_array(const char* arr, char size)
 {
 	for(char n = 0; n<size; n++)
@@ -101,16 +103,14 @@ void dbg_print_char(const char n)
 	dbg_putchar(n);
 	dbg_putchar(0x0A);	
 }
+*/
 
 void dbg_puts(const char *s )
 {
 	while (*s)
 	{
-		dbg_putchar(*s++);
-		
-	}
-
-	
+		dbg_putchar(*s++);		
+	}	
 }
 
 

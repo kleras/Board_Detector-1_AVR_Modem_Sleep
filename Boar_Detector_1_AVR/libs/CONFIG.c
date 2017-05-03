@@ -88,7 +88,7 @@ void int_init()
 void Vibration_detect_int_off()
 {
 	
-	off(EIMSK, INT0); //Atmega328
+	off(EIMSK, INT0); 
 }
 
 void Vibration_detect_int_on()

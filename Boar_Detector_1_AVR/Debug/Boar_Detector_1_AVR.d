@@ -20,9 +20,7 @@ Boar_Detector_1_AVR.d Boar_Detector_1_AVR.o: .././Boar_Detector_1_AVR.c \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\interrupt.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\pgmspace.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\sleep.h \
- ../libs/ADC.h ../libs/CONFIG.h \
- c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\wdt.h \
- ../libs/sim900.h \
+ ../libs/ADC.h ../libs/CONFIG.h ../libs/sim900.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
  ../libs/uart.h ../Boar_Detector_1_AVR.h ../libs/dbg_putchar.h \
  ../libs/uart.h
@@ -72,8 +70,6 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 ../libs/ADC.h:
 
 ../libs/CONFIG.h:
-
-c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\wdt.h:
 
 ../libs/sim900.h:
 

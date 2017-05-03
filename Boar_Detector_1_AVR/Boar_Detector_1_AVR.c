@@ -58,7 +58,7 @@ Duomenu priemimas is hw uarto: rec_data = uart_getc();
 #include <avr/sleep.h>
 #include <ADC.h>
 #include <CONFIG.h>
-#include <avr/wdt.h>
+//#include <avr/wdt.h>
 #include <sim900.h>
 #include <Boar_Detector_1_AVR.h>
 
@@ -78,10 +78,10 @@ volatile unsigned char MOVEMENT_DETECTED = 0;
 volatile unsigned int TIME_OUT_COUNT = 0;
 volatile unsigned char RING_DETECTED = 0;
 
-//const uint8_t main_number[] = "+37061217788";
+const uint8_t main_number[] = "+37061217788";
 const uint8_t debug_number[] = "+37061217788";
-//const uint8_t number[] = "+37062907663";
-const uint8_t main_number[] = "+37068727799";
+//const uint8_t number[] = "+37062907663"; // Egle
+//const uint8_t main_number[] = "+37068727799";
 
 //const uint8_t sms[] = "SMS test...\r\n";
 
@@ -147,8 +147,10 @@ int main(void)
 		sim900_init_uart(38400);
 		sei();	// Global interrupt enable. 
 		
+		_delay_ms(100);
+		
 		#ifdef DEBUG_MODE
-		dbg_puts("UART Initialized.\r\n");
+		dbg_puts("Main UART Initialized.\r\n");
 		#endif
 		
 		sim900_control_pins_init();	
@@ -189,12 +191,11 @@ int main(void)
 					if(sim900_test_at())
 					{
 						#ifdef DEBUG_MODE
-						dbg_puts("AT ok.\r\n");
+						dbg_puts("AT OK after retry.\r\n");
 						#endif
 						
 						break;
-					}
-					
+					}					
 					
 				}
 			}
@@ -202,13 +203,11 @@ int main(void)
 			else
 			{
 				#ifdef DEBUG_MODE
-				dbg_puts("AT ok.\r\n");
+				dbg_puts("AT OK.\r\n");
 				#endif
 			}
 			
-			
-			
-			
+						
 			if(sim900_setup(SETUP_WAIT_TIMEOUT))
 			{
 				#ifdef DEBUG_MODE
@@ -219,15 +218,16 @@ int main(void)
 			{
 				#ifdef DEBUG_MODE
 				dbg_puts("Modem not responding.\r\n");
-				#endif
-				#warning Handle not responding part!!
-				
+				#endif							
 								
 				if(bit_is_clear(RING_INT1_PIN_R,RING_INT1_PIN))
 				{
 					#ifdef DEBUG_MODE
 					dbg_puts("RING is LOW, but modem not responding.\r\n");
 					#endif
+					
+					#warning Handle not responding part!!	
+					
 				}				
 			}			
 		}
@@ -245,6 +245,8 @@ int main(void)
 
 	_delay_ms(10);	
 	
+	/*
+	
 			#ifdef DEBUG_MODE	
 				if(bit_is_set(MCUSR, WDRF))
 				{			
@@ -257,6 +259,8 @@ int main(void)
 					#warning ka darom kai WDT reset, SMS?					
 				}
 			#endif	
+			
+			*/
 	
 	// PINSETUP:
 	
@@ -285,11 +289,15 @@ int main(void)
 			
 			dbg_puts("Vbat: ");
 			dbg_puti(get_vbat_voltage_mV());
-			dbg_puts("mV\r\n");							
+			dbg_puts("mV\r\n");	
+			
+			/*						
 						
 			dbg_puts("Temp.: ");			
 			dbg_puti(get_temp_C());
 			dbg_puts("C\r\n");	
+			
+			*/
 									
 			#endif
 								
@@ -330,7 +338,6 @@ int main(void)
 					dbg_puts("Movement finished.\r\n");
 					#endif
 										
-					//SEND_TEST_SMS(); // RIng off going to sleep. Judejimas baigesi.	
 					send_sms_template(SMS_MODE_MOVEMENT_FINISHED);	
 					
 					// sleep modem
@@ -388,7 +395,7 @@ ISR(INT0_vect)
 
 ISR(INT1_vect)
 {
-	// debounce?
+	#warning check ring pin
 	_delay_ms(20);
 	RING_DETECTED = 1;		
 }
@@ -400,7 +407,7 @@ uint8_t wait_for_movement_to_finish(unsigned int time_out_val){	uint8_t status
 	dbg_puts("Waiting for movement to finish.\r\n");
 	#endif			// nes jau issiustas ispejantis sms		while(TIME_OUT_COUNT < time_out_val)	{																	if(MOVEMENT_DETECTED == 1)		{			Vibration_detect_int_off();			MOVEMENT_DETECTED = 0;			status = 1;			TIME_OUT_COUNT = 0;														#ifdef DEBUG_MODE
 			dbg_puts("Event detected, postponing.\r\n");
-			#endif										}							if(RING_DETECTED == 1)
+			#endif										}					#warning if ring detected and ring high				if(RING_DETECTED == 1) 
 		{
 			Ring_detection_int_off();
 			_delay_ms(10);			
@@ -440,7 +447,6 @@ uint8_t wait_for_movement_to_finish(unsigned int time_out_val){	uint8_t status
 			#endif						Vibration_detect_int_on();					}				if(movement_count > legit_movement_count)		{						#ifdef DEBUG_MODE
 			dbg_puts("Movement is legit, changing status.\r\n");						
 			#endif						return 1;					}		}		return 0;}uint8_t send_sms_template(uint8_t sms_template_code){			#ifdef DEBUG_MODE
-	wdt_reset();
 	dbg_puts("GSM task...\r\n");
 	#endif
 	
@@ -449,7 +455,6 @@ uint8_t wait_for_movement_to_finish(unsigned int time_out_val){	uint8_t status
 	//int0_off();
 			
 			#ifdef DEBUG_MODE
-			wdt_reset();
 			dbg_puts("Checking if modem is registered to network.\r\n");
 			#endif
 			
@@ -460,7 +465,6 @@ uint8_t wait_for_movement_to_finish(unsigned int time_out_val){	uint8_t status
 				#endif
 				
 				#ifdef DEBUG_MODE
-				wdt_reset();
 				dbg_puts("Sending SMS.\r\n");
 				#endif
 				
@@ -470,9 +474,18 @@ uint8_t wait_for_movement_to_finish(unsigned int time_out_val){	uint8_t status
 					dbg_puts("SMS sent.\r\n");
 					#endif
 					
-					#ifdef DEBUG_SMS					
-					_delay_ms(5000);
-					////////////////////////
+			#ifdef DEBUG_SMS	
+					
+					#ifdef DEBUG_MODE
+					dbg_puts("Delaying.\r\n");
+					#endif
+									
+					_delay_ms(10000); // 5s too short.
+					
+					#ifdef DEBUG_MODE
+					dbg_puts("Sending DEBUG SMS.\r\n");
+					#endif
+					
 					if(sim900_send_sms_template(debug_number, sms_template_code)) // different func.
 					{
 						#ifdef DEBUG_MODE
@@ -485,8 +498,8 @@ uint8_t wait_for_movement_to_finish(unsigned int time_out_val){	uint8_t status
 						dbg_puts("Debug SMS not sent.\r\n");
 						#endif
 					}
-					#endif
-					/////////////////////
+			#endif
+					
 					
 					sim900_sleep_enable(); 
 					#warning Function has two return points Should be handled with care.
@@ -510,6 +523,4 @@ uint8_t wait_for_movement_to_finish(unsigned int time_out_val){	uint8_t status
 				#ifdef DEBUG_MODE
 				dbg_puts("Modem is not registered to network.\r\n");
 				#endif
-			}
-
-		Vibration_detect_int_on();	sim900_sleep_enable();	return 0;}
+			}		Vibration_detect_int_on();	sim900_sleep_enable();	return 0;}
