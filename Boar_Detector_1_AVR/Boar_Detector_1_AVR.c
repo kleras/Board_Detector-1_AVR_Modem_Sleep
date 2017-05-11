@@ -35,7 +35,7 @@ Duomenu priemimas is hw uarto: rec_data = uart_getc();
 
 // Timing
 
-#define MOVEMENT_TIMEOUT_MIN 5 // Timout movement delays sms, MAX 15min // settings 5 5 5 
+#define MOVEMENT_TIMEOUT_MIN 2 // Timout movement delays sms, MAX 15min // settings 5 5 5 
 #define LEGIT_MOVEMENT_TIMEOUT_S 2
 
 #define LEGIT_MOVEMENT_COUNT 15 //254 max
