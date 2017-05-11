@@ -13,8 +13,10 @@ HW uart spausdinimas (0x0A pridejau bibliotekoj): uart_puts("Veikia?????");
 Duomenu priemimas is hw uarto: rec_data = uart_getc();
 */
 
+#define FW_VER "FW ver: Modem Sleep v1.0\r\n"
+
 #define F_CPU 8000000UL // CPU clock define (CPU should know what frequency is he on)
-#define MHz F_CPU/1000000
+//#define MHz F_CPU/1000000
 #define UART_BAUD_RATE 38400 //38400 // HW uart BAud rate defined
 #define DEBUG_MODE // Debug Put Char ON/OFF
 #define DEBUG_SMS // Send dublicate sms to debug number.
@@ -34,9 +36,9 @@ Duomenu priemimas is hw uarto: rec_data = uart_getc();
 // Timing
 
 #define MOVEMENT_TIMEOUT_MIN 5 // Timout movement delays sms, MAX 15min // settings 5 5 5 
-#define LEGIT_MOVEMENT_TIMEOUT_S 5
+#define LEGIT_MOVEMENT_TIMEOUT_S 2
 
-#define LEGIT_MOVEMENT_COUNT 5
+#define LEGIT_MOVEMENT_COUNT 15 //254 max
 
 // SMS modes
 
@@ -58,7 +60,6 @@ Duomenu priemimas is hw uarto: rec_data = uart_getc();
 #include <avr/sleep.h>
 #include <ADC.h>
 #include <CONFIG.h>
-//#include <avr/wdt.h>
 #include <sim900.h>
 #include <Boar_Detector_1_AVR.h>
 
@@ -102,6 +103,10 @@ int main(void)
 		#ifdef DEBUG_MODE	// Debug Put Char init
 		dbg_tx_init();
 		#endif
+		
+		_delay_ms(100);
+		
+		dbg_puts(FW_VER);
 		
 /*		
 		if(get_vbat_voltage_mV() < BAT_LOW_mV)
@@ -196,8 +201,12 @@ int main(void)
 						
 						break;
 					}					
-					
 				}
+				
+				#ifdef DEBUG_MODE
+				dbg_puts("End of AT retries, modem not responding.\r\n");
+				#endif				
+				
 			}
 			
 			else
@@ -401,13 +410,12 @@ ISR(INT1_vect)
 }
 
 
-ISR(TIMER0_OVF_vect){	if(TIME_OUT_COUNT>=32700)	{		TIME_OUT_COUNT = 0;	}	TIME_OUT_COUNT++;			//dbg_puts("Timer tick\r\n");		}
-
+ISR(TIMER0_OVF_vect){	if(TIME_OUT_COUNT>=32700)	{		TIME_OUT_COUNT = 0;	}	TIME_OUT_COUNT++;			}
 uint8_t wait_for_movement_to_finish(unsigned int time_out_val){	uint8_t status = 0;	TIME_OUT_COUNT = 0;	TCNT0 = 0; // reset timer.			#ifdef DEBUG_MODE
 	dbg_puts("Waiting for movement to finish.\r\n");
 	#endif			// nes jau issiustas ispejantis sms		while(TIME_OUT_COUNT < time_out_val)	{																	if(MOVEMENT_DETECTED == 1)		{			Vibration_detect_int_off();			MOVEMENT_DETECTED = 0;			status = 1;			TIME_OUT_COUNT = 0;														#ifdef DEBUG_MODE
 			dbg_puts("Event detected, postponing.\r\n");
-			#endif										}					#warning if ring detected and ring high				if(RING_DETECTED == 1) 
+			#endif										}								if(RING_DETECTED == 1) 
 		{
 			Ring_detection_int_off();
 			_delay_ms(10);			
@@ -444,9 +452,9 @@ uint8_t wait_for_movement_to_finish(unsigned int time_out_val){	uint8_t status
 			itoa(f1, str, 10);
 			dbg_puts(str);
 			dbg_puts("\r\n");
-			#endif						Vibration_detect_int_on();					}				if(movement_count > legit_movement_count)		{						#ifdef DEBUG_MODE
+			#endif						Vibration_detect_int_on();					}				if(movement_count > legit_movement_count)		{									#ifdef DEBUG_MODE
 			dbg_puts("Movement is legit, changing status.\r\n");						
-			#endif						return 1;					}		}		return 0;}uint8_t send_sms_template(uint8_t sms_template_code){			#ifdef DEBUG_MODE
+			#endif						return 1;					}		}			return 0;}uint8_t send_sms_template(uint8_t sms_template_code){			#ifdef DEBUG_MODE
 	dbg_puts("GSM task...\r\n");
 	#endif
 	

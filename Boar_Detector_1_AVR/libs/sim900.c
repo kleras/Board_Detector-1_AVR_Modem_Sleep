@@ -19,6 +19,7 @@
 #include "sim900.h"
 #include <Boar_Detector_1_AVR.h>
 #include <ADC.h>
+#include <dbg_putchar.h>
 
 void sim900_init_uart(const uint16_t baudrate)
 {
@@ -569,7 +570,7 @@ void sim900_sleep_disable()
 {
 	// Sleep disable DTR Low
 	off(DTR_PORT_R, DTR_PIN);	
-	_delay_ms(200);
+	_delay_ms(100);
 	#ifdef DEBUG_MODE
 	dbg_puts("Modem Sleep disabled.\r\n");
 	#endif

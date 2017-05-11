@@ -20,7 +20,8 @@ libs/sim900.d libs/sim900.o: ../libs/sim900.c ../libs/sim900.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h \
- ../libs/uart.h ../Boar_Detector_1_AVR.h ../libs/ADC.h
+ ../libs/uart.h ../Boar_Detector_1_AVR.h ../libs/ADC.h \
+ ../libs/dbg_putchar.h
 
 ../libs/sim900.h:
 
@@ -71,3 +72,5 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 ../Boar_Detector_1_AVR.h:
 
 ../libs/ADC.h:
+
+../libs/dbg_putchar.h:
