@@ -35,7 +35,7 @@ Duomenu priemimas is hw uarto: rec_data = uart_getc();
 
 // Timing
 
-#define MOVEMENT_TIMEOUT_MIN 2 // Timout movement delays sms, MAX 15min // settings 5 5 5 
+#define MOVEMENT_TIMEOUT_MIN 1 // Timout movement delays sms, MAX 15min // settings 5 5 5 
 #define LEGIT_MOVEMENT_TIMEOUT_S 2
 
 #define LEGIT_MOVEMENT_COUNT 15 //254 max
@@ -79,10 +79,10 @@ volatile unsigned char MOVEMENT_DETECTED = 0;
 volatile unsigned int TIME_OUT_COUNT = 0;
 volatile unsigned char RING_DETECTED = 0;
 
-const uint8_t main_number[] = "+37061217788";
+//const uint8_t main_number[] = "+37061217788";
 const uint8_t debug_number[] = "+37061217788";
 //const uint8_t number[] = "+37062907663"; // Egle
-//const uint8_t main_number[] = "+37068727799";
+const uint8_t main_number[] = "+37068727799";
 
 //const uint8_t sms[] = "SMS test...\r\n";
 
@@ -107,6 +107,21 @@ int main(void)
 		_delay_ms(100);
 		
 		dbg_puts(FW_VER);
+		
+		/*
+		
+		#ifdef DEBUG_MODE		
+		#ifdef DEBUG_SMS	
+		dbg_puts("Debug SMS activated.\r\n");
+		dbg_puts("Debug number: ");
+		dbg_puts(debug_number);
+		dbg_puts("\r\n");
+		dbg_puts("Main number: ");
+		dbg_puts(main_number);		
+		dbg_puts("\r\n");			
+		#endif		
+		#endif
+		*/
 		
 /*		
 		if(get_vbat_voltage_mV() < BAT_LOW_mV)

@@ -800,12 +800,12 @@ END GROUP
  .rodata.str1.1
                 0x00800106      0x3de Boar_Detector_1_AVR.o
                                 0x3ed (size before relaxing)
- .rodata.debug_number
-                0x008004e4        0xd Boar_Detector_1_AVR.o
-                0x008004e4                debug_number
  .rodata.main_number
+                0x008004e4        0xd Boar_Detector_1_AVR.o
+                0x008004e4                main_number
+ .rodata.debug_number
                 0x008004f1        0xd Boar_Detector_1_AVR.o
-                0x008004f1                main_number
+                0x008004f1                debug_number
  .rodata.str1.1
                 0x008004fe      0x23b libs/sim900.o
                                 0x247 (size before relaxing)
@@ -948,14 +948,14 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x2917
+.debug_info     0x00000000     0x2918
  *(.debug_info .gnu.linkonce.wi.*)
- .debug_info    0x00000000      0xf59 Boar_Detector_1_AVR.o
- .debug_info    0x00000f59       0xb1 libs/ADC.o
- .debug_info    0x0000100a      0x25c libs/dbg_putchar.o
- .debug_info    0x00001266      0x123 libs/CONFIG.o
- .debug_info    0x00001389     0x10a8 libs/sim900.o
- .debug_info    0x00002431      0x4e6 libs/uart.o
+ .debug_info    0x00000000      0xf5a Boar_Detector_1_AVR.o
+ .debug_info    0x00000f5a       0xb1 libs/ADC.o
+ .debug_info    0x0000100b      0x25c libs/dbg_putchar.o
+ .debug_info    0x00001267      0x123 libs/CONFIG.o
+ .debug_info    0x0000138a     0x10a8 libs/sim900.o
+ .debug_info    0x00002432      0x4e6 libs/uart.o
 
 .debug_abbrev   0x00000000      0xa23
  *(.debug_abbrev)
@@ -966,14 +966,14 @@ END GROUP
  .debug_abbrev  0x00000545      0x2e1 libs/sim900.o
  .debug_abbrev  0x00000826      0x1fd libs/uart.o
 
-.debug_line     0x00000000     0x1338
+.debug_line     0x00000000     0x1339
  *(.debug_line .debug_line.* .debug_line_end)
- .debug_line    0x00000000      0x5a8 Boar_Detector_1_AVR.o
- .debug_line    0x000005a8      0x13a libs/ADC.o
- .debug_line    0x000006e2      0x11b libs/dbg_putchar.o
- .debug_line    0x000007fd      0x17d libs/CONFIG.o
- .debug_line    0x0000097a      0x6ea libs/sim900.o
- .debug_line    0x00001064      0x2d4 libs/uart.o
+ .debug_line    0x00000000      0x5a9 Boar_Detector_1_AVR.o
+ .debug_line    0x000005a9      0x13a libs/ADC.o
+ .debug_line    0x000006e3      0x11b libs/dbg_putchar.o
+ .debug_line    0x000007fe      0x17d libs/CONFIG.o
+ .debug_line    0x0000097b      0x6ea libs/sim900.o
+ .debug_line    0x00001065      0x2d4 libs/uart.o
 
 .debug_frame    0x00000000      0x62c
  *(.debug_frame)
