@@ -190,7 +190,7 @@ int main(void)
 		}
 		
 		
-		_delay_ms(100);
+		_delay_ms(5000);
 		
 		if(bit_is_clear(RING_INT1_PIN_R,RING_INT1_PIN))
 		{
